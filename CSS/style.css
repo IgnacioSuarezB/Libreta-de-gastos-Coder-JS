@@ -9,10 +9,7 @@ body {
   background-color: rgb(29, 29, 29);
   color: whitesmoke;
 }
-.container {
-  width: 60%;
-  margin: 0 auto;
-}
+
 h1,
 h2 {
   text-align: center;
@@ -44,4 +41,7 @@ h2 {
 }
 .resumen span {
   margin-left: 2rem;
+}
+.add {
+  padding: 1rem 0;
 }

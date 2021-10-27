@@ -5,21 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Libreta de gastos</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+
     <link rel="stylesheet" href="/CSS/style.css" />
   </head>
   <body>
     <div class="container">
       <h1>Libreta de gasto</h1>
       <h2>Autor: Suarez Barraza, Ignacio</h2>
+      <!-- Gastos por Persona -->
       <div class="inputJS" id="dom">
         <h3>Gastos por persona</h3>
       </div>
+      <!-- Resumen de gastos generales -->
       <div class="resumen">
         <h3>Resumen de gastos generales</h3>
-        <span>Los gastos generales son: </span>
-        <span>Cada persona debe pagar: </span>
+        <span id="gastosGenerales">Los gastos generales son: -</span>
+        <span id="gastosGeneralesCU">Cada persona debe pagar: -</span>
+      </div>
+      <!-- Agregar Persona -->
+      <div class="add">
+        <h3>Agregar Persona</h3>
+        <form action="" id="addForm">
+          <label for="addPerson"
+            >Nombre: <input type="text" name="addPerson" id="addPerson" />
+          </label>
+          <label for="addGastoInd">
+            Gasto Individual:
+            <input
+              type="number"
+              min="0"
+              step="1"
+              name="addGastoInd"
+              id="addGastoInd"
+              value="0"
+            />
+          </label>
+          <label for="addGastoGrupal"
+            >Gasto Grupal:
+            <input
+              type="number"
+              min="0"
+              step="1"
+              name="addGastoGrupal"
+              id="addGastoGrupal"
+            />
+          </label>
+          <button class="btn btn-outline-light" id="addBtn">Agregar</button>
+        </form>
       </div>
     </div>
-    <script src="/script/main.js"></script>
+    <!-- Fin container / Inicio scripts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="/script/main2.js"></script>
   </body>
 </html>
