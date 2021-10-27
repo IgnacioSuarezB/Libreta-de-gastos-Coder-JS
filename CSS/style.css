@@ -1,0 +1,47 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgb(29, 29, 29);
+  color: whitesmoke;
+}
+.container {
+  width: 60%;
+  margin: 0 auto;
+}
+h1,
+h2 {
+  text-align: center;
+  padding: 1rem;
+}
+
+.inputJS {
+  padding: 2rem;
+  background-color: rgb(42, 41, 41);
+}
+
+.cardGastos {
+  padding: 1rem;
+  margin: 0.5rem;
+  display: inline-block;
+  border: 2px solid rgb(230, 230, 230);
+  box-shadow: 2px 4px 7px rgb(200, 200, 200);
+}
+.cardGastos p {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.resumen {
+  margin-top: 1rem;
+}
+.resumen h3 {
+  padding-bottom: 1rem;
+}
+.resumen span {
+  margin-left: 2rem;
+}
