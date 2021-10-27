@@ -59,8 +59,16 @@ function agregarDOM(persona) {
     <p> Gastos individuales: $${persona.gastospropios} </p>
     <p> Gastos grupales: $${persona.gastosgeneralpagado} </p>
     <p> Gastos totales de ${persona.nombre}: $${persona.gastototal}</p>
-    <p> Debe: $${parseInt(persona.devolver)}</p>`;
+    <p class='debe'> Debe: $${parseInt(persona.devolver)}</p>`;
   $dom.appendChild($div);
+  const $debe = document.querySelectorAll(".debe");
+  console.log($debe);
+  $debe.forEach((valor, index) => {
+    personas[index].devolver =
+      gastosgeneralesglobal / personas.length -
+      personas[index].gastosgeneralpagado;
+    valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2);
+  });
 }
 
 function generalDOM() {
