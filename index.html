@@ -19,19 +19,55 @@
       <h1>Libreta de gasto</h1>
       <h2>Autor: Suarez Barraza, Ignacio</h2>
       <!-- Gastos por Persona -->
-      <div class="inputJS" id="dom">
+      <div class="inputJS">
         <h3>Gastos por persona</h3>
+        <div class="d-flex justify-content-evenly flex-wrap" id="dom"></div>
       </div>
       <!-- Resumen de gastos generales -->
       <div class="resumen">
         <h3>Resumen de gastos generales</h3>
-        <span id="gastosGenerales">Los gastos generales son: -</span>
-        <span id="gastosGeneralesCU">Cada persona debe pagar: -</span>
+        <div class="d-flex justify-content-evenly">
+          <span id="gastosGenerales" class="fs-4">Los gastos generales son: -</span>
+          <span id="gastosGeneralesCU" class="fs-4">Cada persona debe pagar: -</span>
+        </div>
       </div>
+      <hr />
+      <!-- Agregar Gastos -->
+      <div class="addGastos py-3">
+        <h3>Agregar Gastos</h3>
+        <form action="" id="formGasto">
+          <label for="person-select"
+            >Nombre:
+            <select name="person" id="person-select">
+              <option value="">Elija una persona</option>
+            </select></label
+          >
+          <input type="radio" id="individual" name="gasto" value="ind" onclick="console.log('click1',gasto[0].checked)"/>
+          <label for="individual">Gasto Individual</label>
+          <input type="radio" id="grupal" name="gasto" value="grup" />
+          <label for="grupal">Gasto Grupal</label>
+          <label for="cantGasto"></label>
+            Gasto:
+            <input
+              type="number"
+              min="0"
+              step="1"
+              name="cantGasto"
+              id="cantGasto"
+            />
+          </label>
+          <input
+            class="btn btn-outline-light"
+            type="submit"
+            value="agregarGastos"
+          /> 
+        </form>
+      </div>
+      <hr />
       <!-- Agregar Persona -->
-      <div class="add">
-        <h3>Agregar Persona</h3>
-        <form action="" id="addForm">
+      <div>
+        <h3 class="pb-3">Agregar Persona</h3>
+        <form action="">
           <label for="addPerson"
             >Nombre: <input type="text" name="addPerson" id="addPerson" />
           </label>
