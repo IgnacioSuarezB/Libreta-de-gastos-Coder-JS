@@ -15,7 +15,9 @@ h2 {
   text-align: center;
   padding: 1rem;
 }
-
+ins {
+  text-decoration: none;
+}
 .inputJS {
   padding: 2rem;
   background-color: rgb(42, 41, 41);

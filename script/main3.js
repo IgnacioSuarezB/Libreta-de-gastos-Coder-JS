@@ -94,23 +94,23 @@ function agregarGasto(e) {
   const $radioInd = document.getElementById("individual");
   const $radioGrupal = document.getElementById("grupal");
   const $gasto = document.getElementById("cantGasto");
+  const $descripcion = document.getElementById("description");
   console.log($radioInd.checked);
   console.log($radioGrupal.checked);
-  //Agregar Referencia de descripcion
   if ($radioInd.checked) {
     personas[$personSelect.value].agregarGastoPropio(
       $gasto.valueAsNumber,
-      "descripcion"
+      $descripcion.value
     );
   }
   if ($radioGrupal.checked) {
     personas[$personSelect.value].agregarGastoGrupal(
       $gasto.valueAsNumber,
-      "descripcion"
+      $descripcion.value
     );
   }
   console.log(personas);
-  //Actualizar Card
+  actualizarCard($personSelect.value);
   actualizarDebe();
   actualizarGeneral();
 }
@@ -119,11 +119,12 @@ function agregarDOM(persona) {
   //Crea la carta de gasto de la nueva persona
   const $div = document.createElement("div");
   $div.classList.add("cardGastos");
+  $div.id = persona.nombre;
   const $dom = document.getElementById("dom");
-  $div.innerHTML += `<h4><b> ${persona.nombre}</b></h4> </br> 
-    <p> Gastos individuales: $${persona.gastopropio.toFixed(2)} </p>
-    <p> Gastos grupales: $${persona.gastogeneral.toFixed(2)} </p>
-    <p> Gastos totales: $${persona.gastototal.toFixed(2)}</p>
+  $div.innerHTML += `<h4 class="mb-4"><b> ${persona.nombre}</b></h4>  
+    <p> Gastos individuales: $<ins>${persona.gastopropio.toFixed(2)}</ins> </p>
+    <p> Gastos grupales: $<ins>${persona.gastogeneral.toFixed(2)}</ins> </p>
+    <p> Gastos totales: $<ins>${persona.gastototal.toFixed(2)}</ins></p>
     <p class='debe'> Debe: $${persona.devolver.toFixed(2)}</p>`;
   $dom.appendChild($div);
   actualizarDebe();
@@ -153,4 +154,12 @@ function actualizarDebe() {
       gastosgeneralesglobal / personas.length - personas[index].gastogeneral;
     valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2);
   });
+}
+
+function actualizarCard(position) {
+  const persona = personas[position];
+  const $nodeListGastos = document.querySelectorAll(`#${persona.nombre} ins`);
+  $nodeListGastos[0].textContent = persona.gastopropio.toFixed(2);
+  $nodeListGastos[1].textContent = persona.gastogeneral.toFixed(2);
+  $nodeListGastos[2].textContent = persona.gastototal.toFixed(2);
 }
