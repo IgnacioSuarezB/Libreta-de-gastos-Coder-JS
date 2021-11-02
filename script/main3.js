@@ -1,40 +1,62 @@
 //Proyecto Final, contador de gastos
-// V2 Antes de la recomendaciones del profe
+// V3 Con clase Gasto y agregarGasto()
 //document.getElementById('r1').checked) funciona
 
 const personas = []; //Array de objetos con todos los datos
 let gastosgeneralesglobal = 0; //Gasto compartido del grupo de personas
 
+class Gasto {
+  //clase Principal
+  constructor(gasto, descripcion) {
+    this.gasto = gasto;
+    this.descripcion = descripcion;
+  }
+}
 class Persona {
   //clase Principal
   //Agregar clase gastos con descripticon
 
-  constructor(nombre, gastospropios, gastosgeneralpagado) {
+  constructor(nombre, gastospropio, gastosgeneralpagado) {
     this.nombre = nombre;
-    if (isNaN(gastospropios)) this.gastospropios = 0;
-    //Asigna 0 gastos si no recibe parametros
-    else this.gastospropios = gastospropios;
-    if (isNaN(gastosgeneralpagado)) this.gastosgeneralpagado = 0;
-    else {
-      this.gastosgeneralpagado = gastosgeneralpagado;
+    this.gastosPropios = [];
+    this.gastosGeneralesPagados = [];
+    this.gastopropio = 0;
+    this.gastogeneral = 0;
+    this.gastototal = 0;
+    this.devolver = 0;
+    if (!isNaN(gastospropio)) {
+      //agregarGastoPropio(gastospropio, "Gasto inicial propio");
+      this.gastosPropios.push(new Gasto(gastospropio, "Gasto inicial propio"));
+      this.gastototal += gastospropio;
+      this.gastopropio += gastospropio;
+    }
+    if (!isNaN(gastosgeneralpagado)) {
+      //agregarGastoGrupal(gastosgeneralpagado, "Gasto inicial general");
+      this.gastosGeneralesPagados.push(
+        new Gasto(gastosgeneralpagado, "Gasto inicial grupal")
+      );
+      this.gastototal += gastosgeneralpagado;
+      this.gastogeneral += gastosgeneralpagado;
       gastosgeneralesglobal += gastosgeneralpagado;
     }
-    this.gastototal = this.gastospropios + this.gastosgeneralpagado;
-    this.devolver =
-      gastosgeneralesglobal / (personas.length + 1) - this.gastosgeneralpagado;
+    // this.gastototal = this.gastospropio + this.gastosgeneralpagado;
+    // this.devolver =
+    //   gastosgeneralesglobal / (personas.length + 1) - this.gastosgeneralpagado;
+    // Hay q ver los gastos Global
   }
   // Agrega Gastos Individuales
-  agregargastoind(gastoind) {
-    this.gastospropios += gastoind;
-    this.gastototal += gastoind;
+  agregarGastoPropio(gastopropio, descripcion) {
+    this.gastosPropios.push(new Gasto(gastopropio, descripcion));
+    this.gastototal += gastopropio;
+    this.gastopropio += gastopropio;
   }
   //Agrega gasto Grupales
-  agregargastogrupal(gastogrupal) {
-    this.gastosgeneralpagado += gastogrupal;
+  agregarGastoGrupal(gastogrupal, descripcion) {
+    this.gastosGeneralesPagados.push(new Gasto(gastogrupal, descripcion));
     this.gastototal += gastogrupal;
+    this.gastogeneral += gastogrupal;
     gastosgeneralesglobal += gastogrupal;
-    this.devolver =
-      gastosgeneralesglobal / personas.length - gastosgeneralpagado;
+    this.devolver = gastosgeneralesglobal / personas.length - this.gastogeneral;
   }
 }
 
@@ -69,14 +91,28 @@ function agregarGasto(e) {
   //Agrega un gasto nuevo
   e.preventDefault();
   const $personSelect = document.getElementById("person-select");
-  const $formGasto = document.getElementById("formGasto"); // ???
+  const $radioInd = document.getElementById("individual");
+  const $radioGrupal = document.getElementById("grupal");
   const $gasto = document.getElementById("cantGasto");
-  console.log($formGasto);
-  //Chequear nombre y valor
-  //Actualizar valores
+  console.log($radioInd.checked);
+  console.log($radioGrupal.checked);
+  //Agregar Referencia de descripcion
+  if ($radioInd.checked) {
+    personas[$personSelect.value].agregarGastoPropio(
+      $gasto.valueAsNumber,
+      "descripcion"
+    );
+  }
+  if ($radioGrupal.checked) {
+    personas[$personSelect.value].agregarGastoGrupal(
+      $gasto.valueAsNumber,
+      "descripcion"
+    );
+  }
+  console.log(personas);
   //Actualizar Card
   actualizarDebe();
-  // Actualizar secc general
+  actualizarGeneral();
 }
 
 function agregarDOM(persona) {
@@ -85,17 +121,17 @@ function agregarDOM(persona) {
   $div.classList.add("cardGastos");
   const $dom = document.getElementById("dom");
   $div.innerHTML += `<h4><b> ${persona.nombre}</b></h4> </br> 
-    <p> Gastos individuales: $${persona.gastospropios} </p>
-    <p> Gastos grupales: $${persona.gastosgeneralpagado} </p>
-    <p> Gastos totales de ${persona.nombre}: $${persona.gastototal}</p>
-    <p class='debe'> Debe: $${parseInt(persona.devolver)}</p>`;
+    <p> Gastos individuales: $${persona.gastopropio.toFixed(2)} </p>
+    <p> Gastos grupales: $${persona.gastogeneral.toFixed(2)} </p>
+    <p> Gastos totales: $${persona.gastototal.toFixed(2)}</p>
+    <p class='debe'> Debe: $${persona.devolver.toFixed(2)}</p>`;
   $dom.appendChild($div);
   actualizarDebe();
   //Agrega a la lista de Agregar Gastos
   const $optionList = document.getElementById("person-select");
   const $option = document.createElement("option");
   $option.textContent = persona.nombre;
-  $option.value = persona.nombre;
+  $option.value = personas.length - 1;
   $optionList.appendChild($option);
 }
 
@@ -106,8 +142,7 @@ function actualizarGeneral() {
   $gastoGeneral.textContent =
     "Los gastos Generales son $" + gastosgeneralesglobal;
   $gastosGeneralCU.textContent =
-    "Cada persona debe pagar: $" +
-    parseInt(gastosgeneralesglobal / personas.length);
+    "Cada persona debe pagar: $" + gastosgeneralesglobal / personas.length;
 }
 
 function actualizarDebe() {
@@ -115,8 +150,7 @@ function actualizarDebe() {
   const $debe = document.querySelectorAll(".debe");
   $debe.forEach((valor, index) => {
     personas[index].devolver =
-      gastosgeneralesglobal / personas.length -
-      personas[index].gastosgeneralpagado;
+      gastosgeneralesglobal / personas.length - personas[index].gastogeneral;
     valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2);
   });
 }

@@ -38,11 +38,11 @@
         <form action="" id="formGasto">
           <label for="person-select"
             >Nombre:
-            <select name="person" id="person-select">
+            <select name="person" id="person-select" required>
               <option value="">Elija una persona</option>
             </select></label
           >
-          <input type="radio" id="individual" name="gasto" value="ind" onclick="console.log('click1',gasto[0].checked)"/>
+          <input type="radio" id="individual" name="gasto" value="ind" required/>
           <label for="individual">Gasto Individual</label>
           <input type="radio" id="grupal" name="gasto" value="grup" />
           <label for="grupal">Gasto Grupal</label>
@@ -54,6 +54,7 @@
               step="1"
               name="cantGasto"
               id="cantGasto"
+              required
             />
           </label>
           <input
@@ -67,9 +68,9 @@
       <!-- Agregar Persona -->
       <div>
         <h3 class="pb-3">Agregar Persona</h3>
-        <form action="">
+        <form action="" id="formPerson">
           <label for="addPerson"
-            >Nombre: <input type="text" name="addPerson" id="addPerson" />
+            >Nombre: <input type="text" name="addPerson" id="addPerson" required/>
           </label>
           <label for="addGastoInd">
             Gasto Individual:
@@ -92,7 +93,10 @@
               id="addGastoGrupal"
             />
           </label>
-          <button class="btn btn-outline-light" id="addBtn">Agregar</button>
+          <input
+          class="btn btn-outline-light"
+          type="submit"
+          id="addBtn"/>
         </form>
       </div>
     </div>
@@ -103,6 +107,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="/script/main2.js"></script>
+    <script src="/script/main3.js"></script>
   </body>
 </html>
