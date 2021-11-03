@@ -16,38 +16,57 @@
   </head>
   <body>
     <div class="container">
-      <h1>Libreta de gasto</h1>
-      <h2>Autor: Suarez Barraza, Ignacio</h2>
-      <!-- Gastos por Persona -->
-      <div class="inputJS">
-        <h3>Gastos por persona</h3>
-        <div class="d-flex justify-content-evenly flex-wrap" id="dom"></div>
-      </div>
-      <!-- Resumen de gastos generales -->
-      <div class="resumen">
-        <h3>Resumen de gastos generales</h3>
-        <div class="d-flex justify-content-evenly">
-          <span id="gastosGenerales" class="fs-4">Los gastos generales son: -</span>
-          <span id="gastosGeneralesCU" class="fs-4">Cada persona debe pagar: -</span>
+      <div class="container row">
+        <h1>Libreta de gasto</h1>
+        <h2>Autor: Suarez Barraza, Ignacio</h2>
+        <!-- Gastos por Persona -->
+        <div class="inputJS">
+          <h3>Gastos por persona</h3>
+          <div class="d-flex justify-content-evenly flex-wrap" id="dom"></div>
         </div>
-      </div>
-      <hr />
-      <!-- Agregar Gastos -->
-      <div class="addGastos py-3">
-        <h3>Agregar Gastos</h3>
-        <form action="" id="formGasto">
-          <label for="person-select"
-            >Nombre:
-            <select name="person" id="person-select" required>
-              <option value="">Elija una persona</option>
-            </select></label
-          >
-          <input type="radio" id="individual" name="gasto" value="ind" required/>
-          <label for="individual">Gasto Individual</label>
-          <input type="radio" id="grupal" name="gasto" value="grup" />
-          <label for="grupal">Gasto Grupal</label>
-          <label for="cantGasto"></label>
-            Gasto:
+        <!-- Resumen de gastos generales -->
+        <div class="resumen my-4">
+          <h3>Resumen de gastos generales</h3>
+          <div class="d-flex justify-content-evenly">
+            <span id="gastosGenerales" class="fs-4"
+              >Los gastos generales son: -</span
+            >
+            <span id="gastosGeneralesCU" class="fs-4"
+              >Cada persona debe pagar: -</span
+            >
+          </div>
+        </div>
+        <hr />
+        <!-- Agregar Gastos -->
+        <div class="addGastos py-3 col-6">
+          <h3 class="mb-3">Agregar Gastos</h3>
+          <form action="" id="formGasto" class="mx-4">
+            <label for="person-select" class="d-block mb-2"
+              >Nombre:
+              <select name="person" id="person-select" required>
+                <option value="">Elija una persona</option>
+              </select></label
+            >
+            <input
+              class="mb-2"
+              type="radio"
+              id="individual"
+              name="gasto"
+              value="ind"
+              required
+            />
+            <label for="individual">Gasto Individual</label>
+            <br />
+            <input
+              class="mb-2"
+              type="radio"
+              id="grupal"
+              name="gasto"
+              value="grup"
+            />
+            <label for="grupal">Gasto Grupal</label>
+            <br />
+            <label class="mb-2" for="cantGasto"> Gasto:</label>
             <input
               type="number"
               min="0"
@@ -56,49 +75,56 @@
               id="cantGasto"
               required
             />
-          </label>
-          <textarea name="description" id="description" rows=""cols="30" rows="10"></textarea> 
-          <input
-            class="btn btn-outline-light"
-            type="submit"
-            value="agregarGastos"
-          />
-        </form>
-      </div>
-      <hr />
-      <!-- Agregar Persona -->
-      <div class="mb-4">
-        <h3 class="pb-3">Agregar Persona</h3>
-        <form action="" id="formPerson">
-          <label for="addPerson"
-            >Nombre: <input type="text" name="addPerson" id="addPerson" required/>
-          </label>
-          <label for="addGastoInd">
-            Gasto Individual:
-            <input
-              type="number"
-              min="0"
-              step="1"
-              name="addGastoInd"
-              id="addGastoInd"
-              value="0"
+            <br />
+            <label for="description" class="mb-2">Descripción</label><br />
+            <textarea
+              name="description"
+              id="description"
+              rows=""
+              cols="30"
+              rows="10"
+              class="mb-2"
+            ></textarea>
+            <br /><input
+              class="btn btn-outline-light"
+              type="submit"
+              value="agregarGastos"
             />
-          </label>
-          <label for="addGastoGrupal"
-            >Gasto Grupal:
-            <input
-              type="number"
-              min="0"
-              step="1"
-              name="addGastoGrupal"
-              id="addGastoGrupal"
-            />
-          </label>
-          <input
-          class="btn btn-outline-light"
-          type="submit"
-          id="addBtn"/>
-        </form>
+          </form>
+        </div>
+        <!-- Agregar Persona -->
+        <div class="mb-4 col-6">
+          <h3 class="pb-3">Agregar Persona</h3>
+          <form action="" id="formPerson" class="mx-4">
+            <label for="addPerson" class="mb-2"
+              >Nombre:
+              <input type="text" name="addPerson" id="addPerson" required />
+            </label>
+            <label for="addGastoInd" class="mb-2">
+              Gasto Individual:
+              <input
+                type="number"
+                min="0"
+                step="1"
+                name="addGastoInd"
+                id="addGastoInd"
+                value="0"
+              />
+            </label>
+            <label for="addGastoGrupal" class="mb-2"
+              >Gasto Grupal:
+              <input
+                type="number"
+                min="0"
+                step="1"
+                name="addGastoGrupal"
+                id="addGastoGrupal"
+              />
+            </label>
+            <br />
+            <input class="btn btn-outline-light" type="submit" id="addBtn" />
+          </form>
+        </div>
       </div>
     </div>
     <!-- Fin container / Inicio scripts -->
