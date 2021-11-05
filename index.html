@@ -73,17 +73,17 @@
               step="1"
               name="cantGasto"
               id="cantGasto"
+              class="form-control w-50"
               required
             />
-            <br />
-            <label for="description" class="mb-2">Descripción</label><br />
+            <label for="description" class="my-2">Descripción</label><br />
             <textarea
               name="description"
               id="description"
               rows=""
               cols="30"
               rows="10"
-              class="mb-2"
+              class="mb-2 form-control"
             ></textarea>
             <br /><input
               class="btn btn-outline-light"
@@ -98,8 +98,16 @@
           <form action="" id="formPerson" class="mx-4">
             <label for="addPerson" class="mb-2"
               >Nombre:
-              <input type="text" name="addPerson" id="addPerson" required />
+              <input
+                type="text"
+                name="addPerson"
+                id="addPerson"
+                class="form-control"
+                required
+                pattern="^[A-Za-z]{1}.*?"
+              />
             </label>
+            <br />
             <label for="addGastoInd" class="mb-2">
               Gasto Individual:
               <input
@@ -109,6 +117,7 @@
                 name="addGastoInd"
                 id="addGastoInd"
                 value="0"
+                class="form-control"
               />
             </label>
             <label for="addGastoGrupal" class="mb-2"
@@ -119,10 +128,16 @@
                 step="1"
                 name="addGastoGrupal"
                 id="addGastoGrupal"
+                class="form-control"
               />
             </label>
             <br />
-            <input class="btn btn-outline-light" type="submit" id="addBtn" />
+            <input
+              class="btn btn-outline-light"
+              type="submit"
+              id="addBtn"
+              value="Agregar Persona"
+            />
           </form>
         </div>
       </div>
@@ -133,7 +148,8 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <script src="/script/main3.js"></script>
+    <script src="/script/main4.js"></script>
   </body>
 </html>
