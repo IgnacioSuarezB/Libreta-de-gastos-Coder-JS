@@ -15,12 +15,53 @@
     <link rel="stylesheet" href="/CSS/style.css" />
   </head>
   <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="/index.html">Libreta de gasto</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/detalles.html">Detalles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/autor.html">Autor</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
     <div class="container">
       <div class="container row">
-        <h1>Libreta de gasto</h1>
-        <h2>Autor: Suarez Barraza, Ignacio</h2>
         <!-- Gastos por Persona -->
-        <div class="inputJS">
+        <div class="inputJS mt-3">
           <h3>Gastos por persona</h3>
           <div class="d-flex justify-content-evenly flex-wrap" id="dom"></div>
         </div>
