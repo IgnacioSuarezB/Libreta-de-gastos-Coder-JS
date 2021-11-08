@@ -28,14 +28,14 @@ class Persona {
     this.gastogeneral = 0;
     this.gastototal = 0;
     this.devolver = 0;
-    if (!isNaN(gastospropio)) {
-      this.gastosPropios.push(new Gasto(gastospropio, "Gasto inicial propio"));
+    if (!isNaN(gastospropio) && gastospropio !== 0) {
+      this.gastosPropios.push(new Gasto(gastospropio, "I: Gasto inicial"));
       this.gastototal += gastospropio;
       this.gastopropio += gastospropio;
     }
-    if (!isNaN(gastosgeneralpagado)) {
+    if (!isNaN(gastosgeneralpagado) && gastosgeneralpagado !== 0) {
       this.gastosGeneralesPagados.push(
-        new Gasto(gastosgeneralpagado, "Gasto inicial grupal")
+        new Gasto(gastosgeneralpagado, "G: Gasto inicial")
       );
       this.gastototal += gastosgeneralpagado;
       this.gastogeneral += gastosgeneralpagado;
@@ -44,13 +44,15 @@ class Persona {
   }
 
   agregarGastoPropio(gastopropio, descripcion) {
-    this.gastosPropios.push(new Gasto(gastopropio, descripcion));
+    this.gastosPropios.push(new Gasto(gastopropio, "I: " + descripcion));
     this.gastototal += gastopropio;
     this.gastopropio += gastopropio;
   }
 
   agregarGastoGrupal(gastogrupal, descripcion) {
-    this.gastosGeneralesPagados.push(new Gasto(gastogrupal, descripcion));
+    this.gastosGeneralesPagados.push(
+      new Gasto(gastogrupal, "G: " + descripcion)
+    );
     this.gastototal += gastogrupal;
     this.gastogeneral += gastogrupal;
     gastosgeneralesglobal += gastogrupal;
