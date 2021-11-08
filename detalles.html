@@ -60,7 +60,40 @@
     </nav>
     <div class="container">
       <h1>Gastos detallados por persona</h1>
+      <label for="person" class="d-block m-3"
+        >Nombre:
+        <select name="person" id="person-select" required>
+          <option value="" selected>Elija una persona</option>
+        </select></label
+      >
+      <table class="table table-dark table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Gasto</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Descripción</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-gastos">
+          <tr>
+            <!--
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+          --></tr>
+        </tbody>
+      </table>
     </div>
+
     <!-- Fin container / Inicio scripts -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -69,6 +102,6 @@
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-    <script src=""></script>
+    <script src="/script/detalles.js"></script>
   </body>
 </html>
