@@ -61,9 +61,49 @@
     <div class="container">
       <h1>Libreta de gasto</h1>
       <h2>Autor: Suarez Barraza, Ignacio</h2>
-      <button type="button" class="btn btn-danger" id="restart">
-        Limpiar todos los datos
-      </button>
+      <div class="position-relative pb-5">
+        <button
+          type="button"
+          class="btn btn-danger position-absolute start-50 translate-middle-x"
+          id="restart"
+          data-bs-toggle="modal"
+          data-bs-target="#ModalEliminar"
+        >
+          Limpiar todos los datos
+        </button>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="ModalEliminar"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Se eliminaron todos los datos
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- Fin container / Inicio scripts -->
     <script
