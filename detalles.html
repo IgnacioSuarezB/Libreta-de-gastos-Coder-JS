@@ -58,7 +58,7 @@
         </div>
       </div>
     </nav>
-    <div class="container">
+    <div class="container position-relative">
       <h1>Gastos detallados por persona</h1>
       <label for="person" class="d-block m-3"
         >Nombre:
@@ -73,25 +73,68 @@
             <th scope="col">Gasto</th>
             <th scope="col">Fecha</th>
             <th scope="col">Descripción</th>
+            <th scope="col">Eliminar</th>
           </tr>
         </thead>
-        <tbody id="tabla-gastos">
-          <tr>
-            <!--
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
-          --></tr>
-        </tbody>
+        <tbody id="tabla-gastos"></tbody>
       </table>
+
+      <!-- Modal -->
+      <button
+        type="button"
+        class="
+          btn btn-danger
+          position-absolute
+          bottom-10
+          end-0
+          translate-middle-x
+        "
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Eliminar esta persona
+      </button>
+    </div>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Esta Seguro?</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            La persona será eliminada permanentemente
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              id="eliminar-persona"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Fin container / Inicio scripts -->
