@@ -3,7 +3,8 @@
 
 let personas = []; //Array de objetos con todos los datos
 let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
-
+let dolarBlue = 0;
+let rate = 1;
 const $addPerson = document.getElementById("formPerson");
 $addPerson.addEventListener("submit", agregarPersona);
 
@@ -114,10 +115,14 @@ function agregarCard(persona) {
   $div.id = persona.nombre;
   const $dom = document.getElementById("dom");
   $div.innerHTML += `<h4 class="mb-4"><b> ${persona.nombre}</b></h4>  
-    <p> Gastos individuales: $<ins>${persona.gastopropio.toFixed(2)}</ins> </p>
-    <p> Gastos grupales: $<ins>${persona.gastogeneral.toFixed(2)}</ins> </p>
-    <p> Gastos totales: $<ins>${persona.gastototal.toFixed(2)}</ins></p>
-    <p class='debe'> Debe: $${persona.devolver.toFixed(2)}</p>`;
+    <p> Gastos individuales: $<ins>${
+      persona.gastopropio.toFixed(2) / rate
+    }</ins> </p>
+    <p> Gastos grupales: $<ins>${
+      persona.gastogeneral.toFixed(2) / rate
+    }</ins> </p>
+    <p> Gastos totales: $<ins>${persona.gastototal.toFixed(2) / rate}</ins></p>
+    <p class='debe'> Debe: $${persona.devolver.toFixed(2) / rate}</p>`;
   $dom.appendChild($div);
   actualizarDebe();
   //Agrega a la lista de Agregar Gastos
@@ -133,10 +138,10 @@ function actualizarGeneral() {
   const $gastoGeneral = document.getElementById("gastosGenerales");
   const $gastosGeneralCU = document.getElementById("gastosGeneralesCU");
   $gastoGeneral.textContent =
-    "Los gastos Generales son $" + gastosgeneralesglobal;
+    "Los gastos Generales son $" + gastosgeneralesglobal / rate;
   $gastosGeneralCU.textContent =
     "Cada persona debe pagar: $" +
-    (gastosgeneralesglobal / personas.length).toFixed(2);
+    (gastosgeneralesglobal / personas.length).toFixed(2) / rate;
 
   localStorage.setItem("storageGlobal", gastosgeneralesglobal);
 }
@@ -147,7 +152,7 @@ function actualizarDebe() {
   $debe.forEach((valor, index) => {
     personas[index].devolver =
       gastosgeneralesglobal / personas.length - personas[index].gastogeneral;
-    valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2);
+    valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2) / rate;
   });
 }
 
@@ -155,9 +160,9 @@ function actualizarCard(position) {
   // Actualiza la card de una persona
   const persona = personas[position];
   const $nodeListGastos = document.querySelectorAll(`#${persona.nombre} ins`);
-  $nodeListGastos[0].textContent = persona.gastopropio.toFixed(2);
-  $nodeListGastos[1].textContent = persona.gastogeneral.toFixed(2);
-  $nodeListGastos[2].textContent = persona.gastototal.toFixed(2);
+  $nodeListGastos[0].textContent = persona.gastopropio.toFixed(2) / rate;
+  $nodeListGastos[1].textContent = persona.gastogeneral.toFixed(2) / rate;
+  $nodeListGastos[2].textContent = persona.gastototal.toFixed(2) / rate;
 }
 
 function cargarDatos() {
@@ -170,6 +175,27 @@ function cargarDatos() {
     });
     actualizarGeneral();
   }
+  const URL = "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
+  $.get(URL, function (data) {
+    dolarBlue = parseFloat(data[1].casa.venta);
+    $("#dolar-text").text(dolarBlue);
+  });
 }
 
 $(document).ready(cargarDatos());
+
+// $("#btn-dolar").click(() => {
+//   console.log(dolarBlue);
+//   personas.forEach((value, index) => actualizarCard(index));
+// });
+
+$("#moneda").change(() => {
+  console.log($("#moneda option:selected").val());
+  if ($("#moneda option:selected").val() === "pesos") {
+    rate = 1;
+  } else if ($("#moneda option:selected").val() === "dolar") {
+    rate = dolarBlue;
+  }
+  actualizarGeneral();
+  personas.forEach((value, index) => actualizarCard(index));
+});

@@ -11,3 +11,10 @@ $("#restart").click(function (e) {
 });
 
 $(".trash-svg").hide();
+$(document).ready(() => {
+  const URL = "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
+  $.get(URL, function (data) {
+    dolarBlue = parseFloat(data[1].casa.venta);
+    $("#dolar-text").text(dolarBlue);
+  });
+});

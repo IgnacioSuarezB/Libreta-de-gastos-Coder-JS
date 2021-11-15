@@ -1,6 +1,6 @@
 let personas = []; //Array de objetos con todos los datos
 let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
-
+let rate = 1;
 class Persona {
   //clase Principal
   constructor(nombre, gastospropio, gastosgeneralpagado) {
@@ -48,14 +48,17 @@ function cargarDatos() {
     const $optionList = document.getElementById("person-select");
     storage.forEach((gente, index) => {
       personas.push(Object.assign(new Persona(), gente));
-      //agregarCard(personas[index]);
       const $option = document.createElement("option");
       $option.textContent = gente.nombre;
       $option.value = index;
       $optionList.appendChild($option);
     });
-    //actualizarGeneral();
   }
+  const URL = "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
+  $.get(URL, function (data) {
+    dolarBlue = parseFloat(data[1].casa.venta);
+    $("#dolar-text").text(dolarBlue);
+  });
 }
 function eliminarGasto(indexPersona, indexGasto) {
   //console.log("anda");
@@ -108,7 +111,7 @@ function cargarDetalles(seleccionado) {
     fecha = Object.assign(new Date(), gasto.fecha);
     $("#tabla-gastos").append(`<tr>
   <th scope="row">${index + 1}</th>
-  <td>${gasto.gasto}</td>
+  <td>${gasto.gasto / rate}</td>
   <td>${
     fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear()
   }</td>
@@ -150,4 +153,19 @@ $("#eliminar-persona").click(function (e) {
   localStorage.setItem("storageGlobal", gastosgeneralesglobal);
   location.reload();
   e.stopPropagation();
+});
+
+$("#moneda").change(() => {
+  console.log($("#moneda option:selected").val());
+  if ($("#moneda option:selected").val() === "pesos") {
+    rate = 1;
+    if ($("#person-select").val() !== "") {
+      cargarDetalles($("#person-select").val());
+    }
+  } else if ($("#moneda option:selected").val() === "dolar") {
+    rate = dolarBlue;
+    if ($("#person-select").val() !== "") {
+      cargarDetalles($("#person-select").val());
+    }
+  }
 });
