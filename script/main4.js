@@ -81,6 +81,11 @@ function agregarPersona(e) {
   agregarCard(personas[personas.length - 1]); //Agrega card
   actualizarGeneral(); // Actuliza secc general
   localStorage.setItem("storagePersonas", JSON.stringify(personas));
+  $addPerson.reset();
+  $("#toast-person").show("slow");
+  setTimeout(function () {
+    $("#toast-person").hide("slow");
+  }, 3000);
 }
 
 function agregarGasto(e) {
@@ -106,6 +111,11 @@ function agregarGasto(e) {
   actualizarDebe();
   actualizarGeneral();
   localStorage.setItem("storagePersonas", JSON.stringify(personas));
+  $addGasto.reset();
+  $("#toast-gasto").show("slow");
+  setTimeout(function () {
+    $("#toast-gasto").hide("slow");
+  }, 3000);
 }
 
 function agregarCard(persona) {
@@ -203,3 +213,5 @@ $("#moneda").change(() => {
   personas.forEach((value, index) => actualizarCard(index));
   actualizarDebe();
 });
+
+$("#formGasto").submit(() => {});
