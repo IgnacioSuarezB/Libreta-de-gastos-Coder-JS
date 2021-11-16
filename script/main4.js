@@ -115,14 +115,16 @@ function agregarCard(persona) {
   $div.id = persona.nombre;
   const $dom = document.getElementById("dom");
   $div.innerHTML += `<h4 class="mb-4"><b> ${persona.nombre}</b></h4>  
-    <p> Gastos individuales: $<ins>${
-      persona.gastopropio.toFixed(2) / rate
-    }</ins> </p>
-    <p> Gastos grupales: $<ins>${
-      persona.gastogeneral.toFixed(2) / rate
-    }</ins> </p>
-    <p> Gastos totales: $<ins>${persona.gastototal.toFixed(2) / rate}</ins></p>
-    <p class='debe'> Debe: $${persona.devolver.toFixed(2) / rate}</p>`;
+    <p> Gastos individuales: $<ins>${(persona.gastopropio / rate).toFixed(
+      2
+    )}</ins> </p>
+    <p> Gastos grupales: $<ins>${(persona.gastogeneral / rate).toFixed(
+      2
+    )}</ins> </p>
+    <p> Gastos totales: $<ins>${(persona.gastototal / rate).toFixed(
+      2
+    )}</ins></p>
+    <p class='debe'> Debe: $${(persona.devolver / rate).toFixed(2)}</p>`;
   $dom.appendChild($div);
   actualizarDebe();
   //Agrega a la lista de Agregar Gastos
@@ -152,7 +154,8 @@ function actualizarDebe() {
   $debe.forEach((valor, index) => {
     personas[index].devolver =
       gastosgeneralesglobal / personas.length - personas[index].gastogeneral;
-    valor.textContent = "Debe: $" + personas[index].devolver.toFixed(2) / rate;
+    valor.textContent =
+      "Debe: $" + (personas[index].devolver / rate).toFixed(2);
   });
 }
 
@@ -160,9 +163,9 @@ function actualizarCard(position) {
   // Actualiza la card de una persona
   const persona = personas[position];
   const $nodeListGastos = document.querySelectorAll(`#${persona.nombre} ins`);
-  $nodeListGastos[0].textContent = persona.gastopropio.toFixed(2) / rate;
-  $nodeListGastos[1].textContent = persona.gastogeneral.toFixed(2) / rate;
-  $nodeListGastos[2].textContent = persona.gastototal.toFixed(2) / rate;
+  $nodeListGastos[0].textContent = (persona.gastopropio / rate).toFixed(2);
+  $nodeListGastos[1].textContent = (persona.gastogeneral / rate).toFixed(2);
+  $nodeListGastos[2].textContent = (persona.gastototal / rate).toFixed(2);
 }
 
 function cargarDatos() {
@@ -198,4 +201,5 @@ $("#moneda").change(() => {
   }
   actualizarGeneral();
   personas.forEach((value, index) => actualizarCard(index));
+  actualizarDebe();
 });
