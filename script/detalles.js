@@ -1,9 +1,9 @@
 let personas = []; //Array de objetos con todos los datos
 let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
-let rate = 1;
+let rate = 1; // ratio de conversión del dolar (1 => no hay conversión)
 let gastosOrdenados = [];
-let banderaGastos = true;
-let banderaFecha = true;
+let banderaGastos = true; // Click en gasto
+let banderaFecha = false; // Click en fecha
 class Persona {
   //clase Principal
   constructor(nombre, gastospropio, gastosgeneralpagado) {
@@ -105,14 +105,10 @@ function eliminarGasto(indexPersona, indexGasto) {
   localStorage.setItem("storageGlobal", gastosgeneralesglobal);
 }
 
+// Dibuja en el DOM cada gasto
 function cargarDetalles() {
   $("#tabla-gastos").empty();
-  /*const todosLosGastos = personas[seleccionado].gastosPropios.concat(
-    personas[seleccionado].gastosGeneralesPagados
-  );*/
-  //console.log(todosLosGastos);
   gastosOrdenados.forEach((gasto, index) => {
-    // console.log(gasto);
     fecha = Object.assign(new Date(), gasto.fecha);
     $("#tabla-gastos").append(`<tr>
   <th scope="row">${index + 1}</th>
@@ -125,6 +121,8 @@ function cargarDetalles() {
 </tr>`);
   });
 }
+
+// Actualiza devolver
 function calcularDevolver() {
   personas.forEach((cada) => {
     cada.devolver = gastosgeneralesglobal / personas.length - cada.gastogeneral;
@@ -137,7 +135,6 @@ $(document).ready(cargarDatos());
 // Se muestra los detalle de los gasto de una persona
 $("#person-select").on("change", function () {
   let seleccionado = $("#person-select").val();
-  //console.log(seleccionado);
   if (seleccionado === "") $("#tabla-gastos").empty();
   else {
     // Creo el array de todos los gastos
@@ -154,9 +151,7 @@ $("#person-select").on("change", function () {
 
 // Elimina un gasto
 $("#tabla-gastos").click(function (e) {
-  console.log(e.target.classList.contains("eliminar"));
   if (e.target.classList.contains("eliminar")) {
-    //console.log($("#person-select").val(), e.target.value);
     eliminarGasto($("#person-select").val(), e.target.value);
   }
   e.stopPropagation();
@@ -169,7 +164,6 @@ $("#eliminar-persona").click(function (e) {
   personas.forEach((persona) => {
     gastosgeneralesglobal += persona.gastogeneral;
   });
-  //console.log(gastosgeneralesglobal);
   calcularDevolver();
   localStorage.setItem("storagePersonas", JSON.stringify(personas));
   localStorage.setItem("storageGlobal", gastosgeneralesglobal);
@@ -179,7 +173,6 @@ $("#eliminar-persona").click(function (e) {
 
 // Lógica para la api dolar
 $("#moneda").change(() => {
-  //console.log($("#moneda option:selected").val());
   if ($("#moneda option:selected").val() === "pesos") {
     rate = 1;
     if ($("#person-select").val() !== "") {
@@ -196,17 +189,15 @@ $("#moneda").change(() => {
 // Ordenar por precio de gastos
 $("#orden-gasto").click(() => {
   banderaGastos ? (banderaGastos = false) : (banderaGastos = true);
-  //console.log(banderaGastos);
   if (banderaGastos)
     gastosOrdenados = gastosOrdenados.sort((a, b) => a.gasto - b.gasto);
   else gastosOrdenados = gastosOrdenados.sort((a, b) => b.gasto - a.gasto);
-  console.log(gastosOrdenados);
   cargarDetalles();
 });
+
 // Ordenar por Fecha
 $("#orden-fecha").click(() => {
   banderaFecha ? (banderaFecha = false) : (banderaFecha = true);
-  //console.log(banderaFecha);
   if (banderaFecha)
     gastosOrdenados = gastosOrdenados.sort(
       (a, b) => new Date(a.fecha).getTime() > new Date(b.fecha).getTime()
@@ -215,8 +206,5 @@ $("#orden-fecha").click(() => {
     gastosOrdenados = gastosOrdenados.sort(
       (a, b) => new Date(a.fecha).getTime() < new Date(b.fecha).getTime()
     );
-  console.log(gastosOrdenados);
   cargarDetalles();
 });
-
-// Ordenar por default
