@@ -1,6 +1,7 @@
 let personas = []; //Array de objetos con todos los datos
 let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
 let rate = 1; // ratio de conversión del dolar (1 => no hay conversión)
+let todosLosGastos = [];
 let gastosOrdenados = [];
 let banderaGastos = true; // Click en gasto
 let banderaFecha = false; // Click en fecha
@@ -66,39 +67,49 @@ function cargarDatos() {
 }
 
 // Elimina un gasto en particular
-function eliminarGasto(indexPersona, indexGasto) {
-  const longPropio = personas[indexPersona].gastosPropios.length;
-  if (longPropio > indexGasto) {
+function eliminarGasto(indexPersona, fechaGasto) {
+  // Busco la fecha en los gastos propios
+  let indexGastoPropio = personas[indexPersona].gastosPropios.findIndex(
+    function (gasto) {
+      return gasto.fecha.toString() === fechaGasto.toString();
+    }
+  );
+  // Busco la fecha en los gastos generales
+  let indexGastoGrupal = personas[
+    indexPersona
+  ].gastosGeneralesPagados.findIndex(function (gasto) {
+    return gasto.fecha.toString() === fechaGasto.toString();
+  });
+  // Me fijo cual es
+  if (indexGastoGrupal === -1) {
     //Gastos Propio
     personas[indexPersona].gastopropio -=
-      personas[indexPersona].gastosPropios[indexGasto].gasto;
+      personas[indexPersona].gastosPropios[indexGastoPropio].gasto;
 
     personas[indexPersona].gastototal -=
-      personas[indexPersona].gastosPropios[indexGasto].gasto;
+      personas[indexPersona].gastosPropios[indexGastoPropio].gasto;
 
-    personas[indexPersona].gastosPropios.splice(indexGasto, 1);
-  } else if (longPropio <= indexGasto) {
+    personas[indexPersona].gastosPropios.splice(indexGastoPropio, 1);
+  } else {
     //Gastos Grupales
     personas[indexPersona].gastogeneral -=
-      personas[indexPersona].gastosGeneralesPagados[
-        indexGasto - longPropio
-      ].gasto;
+      personas[indexPersona].gastosGeneralesPagados[indexGastoGrupal].gasto;
 
     personas[indexPersona].gastototal -=
-      personas[indexPersona].gastosGeneralesPagados[
-        indexGasto - longPropio
-      ].gasto;
+      personas[indexPersona].gastosGeneralesPagados[indexGastoGrupal].gasto;
 
     gastosgeneralesglobal -=
-      personas[indexPersona].gastosGeneralesPagados[indexGasto - longPropio]
-        .gasto;
+      personas[indexPersona].gastosGeneralesPagados[indexGastoGrupal].gasto;
 
-    personas[indexPersona].gastosGeneralesPagados.splice(
-      indexGasto - longPropio,
-      1
-    );
+    personas[indexPersona].gastosGeneralesPagados.splice(indexGastoGrupal, 1);
   }
-  gastosOrdenados.splice(indexGasto, 1);
+  // Elimino el gasto en cache
+  gastosOrdenados.splice(
+    gastosOrdenados.findIndex(function (gasto) {
+      return gasto.fecha.toString() === fechaGasto.toString();
+    }),
+    1
+  );
   cargarDetalles();
   calcularDevolver();
   localStorage.setItem("storagePersonas", JSON.stringify(personas));
@@ -117,7 +128,9 @@ function cargarDetalles() {
     fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear()
   }</td>
   <td>${gasto.descripcion}</td>
-  <td > <button type="button" class="btn btn-danger eliminar" value="${index}">X</button></td>
+  <td > <button type="button" class="btn btn-danger eliminar" value="${
+    gasto.fecha
+  }">X</button></td>
 </tr>`);
   });
 }
@@ -138,11 +151,11 @@ $("#person-select").on("change", function () {
   if (seleccionado === "") $("#tabla-gastos").empty();
   else {
     // Creo el array de todos los gastos
-    gastosOrdenados = personas[seleccionado].gastosPropios.concat(
+    todosLosGastos = personas[seleccionado].gastosPropios.concat(
       personas[seleccionado].gastosGeneralesPagados
     );
     // Ordeno el array por fecha, más nuevos primeros
-    gastosOrdenados = gastosOrdenados.sort(
+    gastosOrdenados = todosLosGastos.sort(
       (a, b) => new Date(a.fecha).getTime() < new Date(b.fecha).getTime()
     );
     cargarDetalles();
