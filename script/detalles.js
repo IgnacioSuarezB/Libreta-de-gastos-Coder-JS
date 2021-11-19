@@ -1,51 +1,14 @@
-let personas = []; //Array de objetos con todos los datos
-let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
-let rate = 1; // ratio de conversión del dolar (1 => no hay conversión)
-let todosLosGastos = [];
-let gastosOrdenados = [];
+// Script en donde se puede eliminar un gasto o persona en particular
+
+let todosLosGastos = []; // Array de todos los gastos
+let gastosOrdenados = []; // Array de todos los gastos ordenados
 let banderaGastos = true; // Click en gasto
 let banderaFecha = false; // Click en fecha
-class Persona {
-  //clase Principal
-  constructor(nombre, gastospropio, gastosgeneralpagado) {
-    this.nombre = nombre;
-    this.gastosPropios = [];
-    this.gastosGeneralesPagados = [];
-    this.gastopropio = 0;
-    this.gastogeneral = 0;
-    this.gastototal = 0;
-    this.devolver = 0;
-    if (!isNaN(gastospropio)) {
-      this.gastosPropios.push(new Gasto(gastospropio, "Gasto inicial propio"));
-      this.gastototal += gastospropio;
-      this.gastopropio += gastospropio;
-    }
-    if (!isNaN(gastosgeneralpagado)) {
-      this.gastosGeneralesPagados.push(
-        new Gasto(gastosgeneralpagado, "Gasto inicial grupal")
-      );
-      this.gastototal += gastosgeneralpagado;
-      this.gastogeneral += gastosgeneralpagado;
-      gastosgeneralesglobal += gastosgeneralpagado;
-    }
-  }
 
-  agregarGastoPropio(gastopropio, descripcion) {
-    this.gastosPropios.push(new Gasto(gastopropio, descripcion));
-    this.gastototal += gastopropio;
-    this.gastopropio += gastopropio;
-  }
+// Carga las personas y gastos de storage
+$(document).ready(cargarDatos());
 
-  agregarGastoGrupal(gastogrupal, descripcion) {
-    this.gastosGeneralesPagados.push(new Gasto(gastogrupal, descripcion));
-    this.gastototal += gastogrupal;
-    this.gastogeneral += gastogrupal;
-    gastosgeneralesglobal += gastogrupal;
-    this.devolver = gastosgeneralesglobal / personas.length - this.gastogeneral;
-  }
-}
-
-// Carga los datos desde el Storage
+// Carga los datos desde el Storage y callback a la api
 function cargarDatos() {
   const storage = JSON.parse(localStorage.getItem("storagePersonas"));
   if (storage !== null) {
@@ -59,11 +22,7 @@ function cargarDatos() {
       $optionList.appendChild($option);
     });
   }
-  const URL = "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
-  $.get(URL, function (data) {
-    dolarBlue = parseFloat(data[1].casa.venta);
-    $("#dolar-text").text(dolarBlue);
-  });
+  cargarDolar();
 }
 
 // Elimina un gasto en particular
@@ -120,7 +79,7 @@ function eliminarGasto(indexPersona, fechaGasto) {
 function cargarDetalles() {
   $("#tabla-gastos").empty();
   gastosOrdenados.forEach((gasto, index) => {
-    fecha = Object.assign(new Date(), gasto.fecha);
+    fecha = new Date(gasto.fecha);
     $("#tabla-gastos").append(`<tr>
   <th scope="row">${index + 1}</th>
   <td>${(gasto.gasto / rate).toFixed(2)}</td>
@@ -142,9 +101,6 @@ function calcularDevolver() {
   });
 }
 
-// Carga las personas y gastos de storage
-$(document).ready(cargarDatos());
-
 // Se muestra los detalle de los gasto de una persona
 $("#person-select").on("change", function () {
   let seleccionado = $("#person-select").val();
@@ -165,7 +121,10 @@ $("#person-select").on("change", function () {
 // Elimina un gasto
 $("#tabla-gastos").click(function (e) {
   if (e.target.classList.contains("eliminar")) {
-    eliminarGasto($("#person-select").val(), e.target.value);
+    $(e.target.parentElement.parentElement).fadeOut(600);
+    setTimeout(function () {
+      eliminarGasto($("#person-select").val(), e.target.value);
+    }, 600);
   }
   e.stopPropagation();
 });

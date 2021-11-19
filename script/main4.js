@@ -1,64 +1,26 @@
 //Proyecto Final, contador de gastos
 // V4 Agregando Storage y trabajando con jquery
 
-let personas = []; //Array de objetos con todos los datos
-let gastosgeneralesglobal = 0; //Gasto compartido por todo el grupo de personas
-let dolarBlue = 0;
-let rate = 1;
 const $addPerson = document.getElementById("formPerson");
 $addPerson.addEventListener("submit", agregarPersona);
 
 const $addGasto = document.getElementById("formGasto");
 $addGasto.addEventListener("submit", agregarGasto);
 
-class Gasto {
-  //clase Secundaria
-  constructor(gasto, descripcion) {
-    this.gasto = gasto;
-    this.descripcion = descripcion;
-    this.fecha = new Date();
-  }
-}
-class Persona {
-  //clase Principal
-  constructor(nombre, gastospropio, gastosgeneralpagado) {
-    this.nombre = nombre;
-    this.gastosPropios = [];
-    this.gastosGeneralesPagados = [];
-    this.gastopropio = 0;
-    this.gastogeneral = 0;
-    this.gastototal = 0;
-    this.devolver = 0;
-    if (!isNaN(gastospropio) && gastospropio !== 0) {
-      this.gastosPropios.push(new Gasto(gastospropio, "I: Gasto inicial"));
-      this.gastototal += gastospropio;
-      this.gastopropio += gastospropio;
-    }
-    if (!isNaN(gastosgeneralpagado) && gastosgeneralpagado !== 0) {
-      this.gastosGeneralesPagados.push(
-        new Gasto(gastosgeneralpagado, "G: Gasto inicial")
-      );
-      this.gastototal += gastosgeneralpagado;
-      this.gastogeneral += gastosgeneralpagado;
-      gastosgeneralesglobal += gastosgeneralpagado;
-    }
-  }
+$(document).ready(cargarDatos());
 
-  agregarGastoPropio(gastopropio, descripcion) {
-    this.gastosPropios.push(new Gasto(gastopropio, "I: " + descripcion));
-    this.gastototal += gastopropio;
-    this.gastopropio += gastopropio;
+function cargarDatos() {
+  // Carga los datos desde el Storage y callback a la api
+  const storage = JSON.parse(localStorage.getItem("storagePersonas"));
+  if (storage !== null) {
+    gastosgeneralesglobal = JSON.parse(localStorage.getItem("storageGlobal"));
+    storage.forEach((gente, index) => {
+      personas.push(Object.assign(new Persona(), gente));
+      agregarCard(personas[index]);
+    });
+    actualizarGeneral();
   }
-
-  agregarGastoGrupal(gastogrupal, descripcion) {
-    this.gastosGeneralesPagados.push(
-      new Gasto(gastogrupal, "G: " + descripcion)
-    );
-    this.gastototal += gastogrupal;
-    this.gastogeneral += gastogrupal;
-    gastosgeneralesglobal += gastogrupal;
-    this.devolver = gastosgeneralesglobal / personas.length - this.gastogeneral;
-  }
+  cargarDolar();
 }
 
 function agregarPersona(e) {
@@ -86,6 +48,12 @@ function agregarPersona(e) {
   setTimeout(function () {
     $("#toast-person").hide("slow");
   }, 3000);
+  $("html, body").animate(
+    {
+      scrollTop: $("body").offset().top,
+    },
+    500
+  );
 }
 
 function agregarGasto(e) {
@@ -150,10 +118,10 @@ function actualizarGeneral() {
   const $gastoGeneral = document.getElementById("gastosGenerales");
   const $gastosGeneralCU = document.getElementById("gastosGeneralesCU");
   $gastoGeneral.textContent =
-    "Los gastos Generales son $" + gastosgeneralesglobal / rate;
+    "Los gastos Generales son $" + (gastosgeneralesglobal / rate).toFixed(2);
   $gastosGeneralCU.textContent =
     "Cada persona debe pagar: $" +
-    (gastosgeneralesglobal / personas.length).toFixed(2) / rate;
+    (gastosgeneralesglobal / personas.length / rate).toFixed(2);
 
   localStorage.setItem("storageGlobal", gastosgeneralesglobal);
 }
@@ -178,32 +146,8 @@ function actualizarCard(position) {
   $nodeListGastos[2].textContent = (persona.gastototal / rate).toFixed(2);
 }
 
-function cargarDatos() {
-  const storage = JSON.parse(localStorage.getItem("storagePersonas"));
-  if (storage !== null) {
-    gastosgeneralesglobal = JSON.parse(localStorage.getItem("storageGlobal"));
-    storage.forEach((gente, index) => {
-      personas.push(Object.assign(new Persona(), gente));
-      agregarCard(personas[index]);
-    });
-    actualizarGeneral();
-  }
-  const URL = "https://www.dolarsi.com/api/api.php?type=valoresprincipales";
-  $.get(URL, function (data) {
-    dolarBlue = parseFloat(data[1].casa.venta);
-    $("#dolar-text").text(dolarBlue);
-  });
-}
-
-$(document).ready(cargarDatos());
-
-// $("#btn-dolar").click(() => {
-//   console.log(dolarBlue);
-//   personas.forEach((value, index) => actualizarCard(index));
-// });
-
 $("#moneda").change(() => {
-  console.log($("#moneda option:selected").val());
+  // Lógica para la api dolar
   if ($("#moneda option:selected").val() === "pesos") {
     rate = 1;
   } else if ($("#moneda option:selected").val() === "dolar") {
@@ -213,5 +157,3 @@ $("#moneda").change(() => {
   personas.forEach((value, index) => actualizarCard(index));
   actualizarDebe();
 });
-
-$("#formGasto").submit(() => {});
