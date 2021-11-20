@@ -1,4 +1,4 @@
-//Proyecto Final, contador de gastos
+//Proyecto Final, contador de gastos personal
 
 const $addPerson = document.getElementById("formPerson");
 $addPerson.addEventListener("submit", agregarPersona);
